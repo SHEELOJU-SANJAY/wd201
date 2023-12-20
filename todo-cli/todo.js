@@ -1,53 +1,56 @@
 const todoList = () => {
-    let all = [];
-
+    let all = []
     const add = (todoItem) => {
-        all.push(todoItem);
-    };
-
+      all.push(todoItem)
+    }
     const markAsComplete = (index) => {
-        all[index].completed = true;
-    };
+        all[index].completed = true
+    }
 
     const overdue = () => {
-        const today = formattedDate(new Date());
+        // Write the date check condition here and return the array
+        // of overdue items accordingly.
         return all.filter((todo) => todo.dueDate < today);
-    };
+    }
 
     const dueToday = () => {
-        const today = formattedDate(new Date());
+        // Write the date check condition here and return the array
+        // of todo items that are due today accordingly.
         return all.filter((todo) => todo.dueDate === today);
-    };
+    }
 
     const dueLater = () => {
-        const today = formattedDate(new Date());
+        // Write the date check condition here and return the array
+        // of todo items that are due later accordingly.
         return all.filter((todo) => todo.dueDate > today);
-    };
+    }
 
-    const toDisplayableList = () => {
-        const overdueList = toDisplayableSection('Overdue', overdue());
-        const dueTodayList = toDisplayableSection('Due Today', dueToday());
-        const dueLaterList = toDisplayableSection('Due Later', dueLater());
-
-        return `My Todo-list\n\n${overdueList}\n${dueTodayList}\n${dueLaterList}`;
-    };
-
-    const toDisplayableSection = (title, list) => {
-        const formattedList = list.map((todo) => {
-            const checkbox = todo.completed ? '[x]' : '[ ]';
-            return `${checkbox} ${todo.title} ${todo.dueDate}`;
+    const toDisplayableList = (vlist) => {
+        // Format the To-Do list here, and return the output string
+        // as per the format given above.
+        var list = vlist.map((todo) => {
+            const checkbox = todo.completed === true ? '[x]' : '[ ]';
+            const formattedDate = todo.dueDate !== today ? `${todo.dueDate}` : '';
+            return `${checkbox} ${todo.title} ${formattedDate}`;
         });
+        function returnElementsLineByLine(list) {
 
-        if (formattedList.length > 0) {
-            return `${title}\n${formattedList.join('\n')}`;
-        } else {
-            return '';
+            var result = list.join('\n');
+            return result;
         }
-    };
+        var lines = returnElementsLineByLine(list);
 
-    const formattedDate = (d) => {
-        return d.toISOString().split('T')[0];
-    };
+
+        return lines;
+
+    }
+
+    const formattedDate = d => {
+        return d.toISOString().split("T")[0]
+    }
+    
+    var dateToday = new Date()
+    const today = formattedDate(dateToday)
 
     return {
         all,
@@ -56,17 +59,10 @@ const todoList = () => {
         overdue,
         dueToday,
         dueLater,
-        toDisplayableList,
+        toDisplayableList
     };
 };
 
-// Example usage
-const myTodoList = todoList();
+module.exports=todoList;
 
-myTodoList.add({ title: 'Submit assignment', dueDate: '2023-12-19', completed: false });
-myTodoList.add({ title: 'Pay rent', dueDate: '2023-12-20', completed: true });
-myTodoList.add({ title: 'Service Vehicle', dueDate: '2023-12-20', completed: false });
-myTodoList.add({ title: 'File taxes', dueDate: '2023-12-21', completed: false });
-myTodoList.add({ title: 'Pay electric bill', dueDate: '2023-12-21', completed: false });
 
-console.log(myTodoList.toDisplayableList());
