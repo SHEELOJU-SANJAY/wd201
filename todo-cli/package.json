@@ -7,7 +7,7 @@
     "test": "jest",
     "prepare": "cd.. && husky install todo-cli/.husky"
   },
-  "author": "Sai-Srujan <pandirisaisrujan@gmail.com>",
+  "author": "anvesh",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.56.0",
