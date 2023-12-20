@@ -14,24 +14,36 @@ const todoList = () => {
   };
 
   const dueToday = () => {
-    return all.filter((todo) => todo.dueDate === today && !todo.completed);
+    return all.filter((todo) => todo.dueDate === today);
   };
 
   const dueLater = () => {
-    return all.filter((todo) => todo.dueDate > today && !todo.completed);
+    return all.filter((todo) => todo.dueDate > today);
   };
 
-  const toDisplayableList = (vlist) => {
-    const list = vlist.map((todo) => {
+  const toDisplayableList = () => {
+    const overdueList = toDisplayableSection('Overdue', overdue());
+    const dueTodayList = toDisplayableSection('Due Today', dueToday());
+    const dueLaterList = toDisplayableSection('Due Later', dueLater());
+
+    return `My Todo-list\n\n${overdueList}\n${dueTodayList}\n${dueLaterList}`;
+  };
+
+  const toDisplayableSection = (title, list) => {
+    const formattedList = list.map((todo) => {
       const checkbox = todo.completed ? '[x]' : '[ ]';
       return `${checkbox} ${todo.title} ${todo.dueDate}`;
     });
 
-    return list.join('\n');
+    if (formattedList.length > 0) {
+      return `${title}\n${formattedList.join('\n')}`;
+    } else {
+      return '';
+    }
   };
 
   const formattedDate = (d) => {
-    return d.toISOString().split("T")[0];
+    return d.toISOString().split('T')[0];
   };
 
   const dateToday = new Date();
@@ -55,7 +67,7 @@ const todoList = () => {
 const todos = todoList();
 
 const formattedDate = (d) => {
-  return d.toISOString().split("T")[0];
+  return d.toISOString().split('T')[0];
 };
 
 const dateToday = new Date();
@@ -69,22 +81,4 @@ todos.add({ title: 'Service Vehicle', dueDate: today, completed: false });
 todos.add({ title: 'File taxes', dueDate: tomorrow, completed: false });
 todos.add({ title: 'Pay electric bill', dueDate: tomorrow, completed: false });
 
-console.log("My Todo-list\n");
-
-console.log("Overdue");
-const overdues = todos.overdue();
-const formattedOverdues = todos.toDisplayableList(overdues);
-console.log(formattedOverdues);
-console.log("\n");
-
-console.log("Due Today");
-const itemsDueToday = todos.dueToday();
-const formattedItemsDueToday = todos.toDisplayableList(itemsDueToday);
-console.log(formattedItemsDueToday);
-console.log("\n");
-
-console.log("Due Later");
-const itemsDueLater = todos.dueLater();
-const formattedItemsDueLater = todos.toDisplayableList(itemsDueLater);
-console.log(formattedItemsDueLater);
-console.log("\n\n");
+console.log(todos.toDisplayableList());
